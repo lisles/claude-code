@@ -189,7 +189,11 @@ body {
     }
 
     .details {
-        font-size: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .details > div {
+        line-height: 1.6;
     }
 
     .location-input {
