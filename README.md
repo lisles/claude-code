@@ -10,9 +10,16 @@ A beautifully simple single-serving weather app that answers one question: **Is 
 - No API key required
 - Remembers your location preference
 
+## Live Demo
+
+Visit the live app: **Your GitHub Pages URL will be here once deployed!**
+
+After enabling GitHub Pages (see instructions below), your app will be available at:
+`https://[your-username].github.io/claude-code/`
+
 ## How to Use
 
-1. Open `index.html` in your web browser
+1. Visit the live URL (or open `index.html` locally)
 2. Enter your city name
 3. Get your answer instantly
 
@@ -25,6 +32,19 @@ The app uses the free [Open-Meteo API](https://open-meteo.com/) to fetch:
 - Today's forecasted high temperature
 
 It then compares them and gives you a simple, clear answer.
+
+## Setting Up GitHub Pages (for phone access)
+
+To use this app on your phone, enable GitHub Pages:
+
+1. Go to your repo on GitHub
+2. Click **Settings** → **Pages**
+3. Under "Build and deployment":
+   - Source: **GitHub Actions**
+4. The workflow will auto-deploy
+5. Your app will be live at `https://[username].github.io/claude-code/`
+
+Bookmark it on your phone and check it every morning!
 
 ## Running Locally
 
