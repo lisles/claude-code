@@ -139,7 +139,6 @@ body {
 
 .location-input {
     display: flex;
-    gap: 10px;
     justify-content: center;
     margin-top: 20px;
 }
@@ -152,29 +151,12 @@ body {
     background: rgba(255, 255, 255, 0.9);
     color: #2d3748;
     min-width: 250px;
+    text-align: center;
 }
 
 .location-input input:focus {
     outline: none;
     background: white;
-}
-
-.location-input button {
-    padding: 12px 30px;
-    border: none;
-    border-radius: 25px;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.9);
-    color: #667eea;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.location-input button:hover {
-    background: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .error {

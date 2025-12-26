@@ -1,5 +1,5 @@
 // Default city and mode
-let currentCity = localStorage.getItem('weatherCity') || 'San Francisco';
+let currentCity = localStorage.getItem('weatherCity') || '05255';
 let currentMode = localStorage.getItem('weatherMode') || 'yesterday';
 
 // Load weather on page load
