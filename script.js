@@ -1,11 +1,43 @@
-// Default city
+// Default city and mode
 let currentCity = localStorage.getItem('weatherCity') || 'San Francisco';
+let currentMode = localStorage.getItem('weatherMode') || 'yesterday';
 
 // Load weather on page load
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('city').value = currentCity;
+
+    // Set initial mode
+    if (currentMode === 'future') {
+        setMode('future', false);
+    }
+
     loadWeather();
 });
+
+function setMode(mode, shouldReload = true) {
+    currentMode = mode;
+    localStorage.setItem('weatherMode', mode);
+
+    // Update button styles
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event?.target?.classList.add('active');
+
+    // Show/hide future selector
+    const futureSelector = document.getElementById('futureSelector');
+    if (mode === 'future') {
+        futureSelector.style.display = 'block';
+        document.querySelectorAll('.mode-btn')[1].classList.add('active');
+    } else {
+        futureSelector.style.display = 'none';
+        document.querySelectorAll('.mode-btn')[0].classList.add('active');
+    }
+
+    if (shouldReload) {
+        loadWeather();
+    }
+}
 
 async function updateLocation() {
     const cityInput = document.getElementById('city');
@@ -35,54 +67,93 @@ async function loadWeather() {
 
         const { latitude, longitude, name, country } = geoData.results[0];
 
-        // Get weather data for today and yesterday
-        const today = new Date();
-        const yesterday = new Date(today);
-        yesterday.setDate(yesterday.getDate() - 1);
+        if (currentMode === 'yesterday') {
+            // Yesterday mode - compare today with yesterday
+            const weatherData = await fetch(
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&past_days=1`
+            ).then(res => res.json());
 
-        const formatDate = (date) => {
-            return date.toISOString().split('T')[0];
-        };
+            const yesterdayTemp = weatherData.daily.temperature_2m_max[0];
+            const todayTemp = weatherData.daily.temperature_2m_max[1];
 
-        // Fetch weather data
-        const weatherData = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&past_days=1`
-        ).then(res => res.json());
+            const difference = Math.abs(todayTemp - yesterdayTemp);
+            const comparison = todayTemp > yesterdayTemp ? 'warmer' :
+                              todayTemp < yesterdayTemp ? 'colder' : 'the same';
 
-        const yesterdayTemp = weatherData.daily.temperature_2m_max[0];
-        const todayTemp = weatherData.daily.temperature_2m_max[1];
+            // Display the main message
+            if (comparison === 'the same') {
+                messageEl.innerHTML = `
+                    <div class="message-text">
+                        Today is going to be <span class="comparison">the same</span> as yesterday.
+                    </div>
+                `;
+            } else {
+                messageEl.innerHTML = `
+                    <div class="message-text">
+                        Today is going to be <span class="comparison">${comparison}</span> than yesterday.
+                    </div>
+                `;
+            }
 
-        const difference = Math.abs(todayTemp - yesterdayTemp);
-        const comparison = todayTemp > yesterdayTemp ? 'warmer' :
-                          todayTemp < yesterdayTemp ? 'colder' : 'the same';
-
-        // Display the main message
-        if (comparison === 'the same') {
-            messageEl.innerHTML = `
-                <div class="message-text">
-                    Today is going to be <span class="comparison">the same</span> as yesterday.
+            // Display temperature details
+            detailsEl.innerHTML = `
+                <div>
+                    <span class="temp">Yesterday: ${Math.round(yesterdayTemp)}°F</span>
+                    <span style="margin: 0 15px;">•</span>
+                    <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
+                    ${difference > 0 ? `<span style="margin: 0 15px;">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
+                </div>
+                <div style="margin-top: 10px; font-size: 1rem; opacity: 0.8;">
+                    ${name}${country ? `, ${country}` : ''}
                 </div>
             `;
         } else {
-            messageEl.innerHTML = `
-                <div class="message-text">
-                    Today is going to be <span class="comparison">${comparison}</span> than yesterday.
+            // Future mode - compare future date with today
+            const weatherData = await fetch(
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&forecast_days=8`
+            ).then(res => res.json());
+
+            const futureDayOffset = parseInt(document.getElementById('futureDay').value);
+            const todayTemp = weatherData.daily.temperature_2m_max[0];
+            const futureTemp = weatherData.daily.temperature_2m_max[futureDayOffset];
+
+            const difference = Math.abs(futureTemp - todayTemp);
+            const comparison = futureTemp > todayTemp ? 'warmer' :
+                              futureTemp < todayTemp ? 'colder' : 'the same';
+
+            // Get day name for the future date
+            const futureDate = new Date();
+            futureDate.setDate(futureDate.getDate() + futureDayOffset);
+            const dayName = futureDate.toLocaleDateString('en-US', { weekday: 'long' });
+
+            // Display the main message
+            if (comparison === 'the same') {
+                messageEl.innerHTML = `
+                    <div class="message-text">
+                        <span class="comparison">${dayName}</span> is going to be the same as today.
+                    </div>
+                `;
+            } else {
+                messageEl.innerHTML = `
+                    <div class="message-text">
+                        <span class="comparison">${dayName}</span> is going to be <span class="comparison">${comparison}</span> than today.
+                    </div>
+                `;
+            }
+
+            // Display temperature details
+            detailsEl.innerHTML = `
+                <div>
+                    <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
+                    <span style="margin: 0 15px;">•</span>
+                    <span class="temp">${dayName}: ${Math.round(futureTemp)}°F</span>
+                    ${difference > 0 ? `<span style="margin: 0 15px;">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
+                </div>
+                <div style="margin-top: 10px; font-size: 1rem; opacity: 0.8;">
+                    ${name}${country ? `, ${country}` : ''}
                 </div>
             `;
         }
-
-        // Display temperature details
-        detailsEl.innerHTML = `
-            <div>
-                <span class="temp">Yesterday: ${Math.round(yesterdayTemp)}°F</span>
-                <span style="margin: 0 15px;">•</span>
-                <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
-                ${difference > 0 ? `<span style="margin: 0 15px;">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
-            </div>
-            <div style="margin-top: 10px; font-size: 1rem; opacity: 0.8;">
-                ${name}${country ? `, ${country}` : ''}
-            </div>
-        `;
 
     } catch (error) {
         messageEl.innerHTML = `

@@ -8,6 +8,23 @@
 </head>
 <body>
     <div class="container">
+        <div class="mode-selector">
+            <button class="mode-btn active" onclick="setMode('yesterday')">vs Yesterday</button>
+            <button class="mode-btn" onclick="setMode('future')">vs Future</button>
+        </div>
+
+        <div id="futureSelector" class="future-selector" style="display: none;">
+            <select id="futureDay" onchange="loadWeather()">
+                <option value="1">Tomorrow</option>
+                <option value="2">2 days</option>
+                <option value="3">3 days</option>
+                <option value="4">4 days</option>
+                <option value="5">5 days</option>
+                <option value="6">6 days</option>
+                <option value="7">7 days</option>
+            </select>
+        </div>
+
         <div id="message" class="message">
             <span class="loading">Loading...</span>
         </div>

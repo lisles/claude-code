@@ -20,6 +20,56 @@ body {
     width: 100%;
 }
 
+.mode-selector {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.mode-btn {
+    padding: 10px 25px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.mode-btn.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+.future-selector {
+    margin-bottom: 20px;
+}
+
+.future-selector select {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2d3748;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.future-selector select:focus {
+    outline: none;
+    background: white;
+}
+
 .message {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
