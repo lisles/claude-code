@@ -115,16 +115,17 @@ async function loadWeather() {
                               todayTemp < yesterdayTemp ? 'colder' : 'the same';
 
             // Display the main message
+            const comparisonClass = comparison === 'warmer' ? 'comparison warmer' : 'comparison';
             if (comparison === 'the same') {
                 messageEl.innerHTML = `
                     <div class="message-text">
-                        Today is going to be <span class="comparison">the same</span> as yesterday.
+                        Today is going to be <span class="${comparisonClass}">the same</span> as yesterday.
                     </div>
                 `;
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
-                        Today is going to be <span class="comparison">${comparison}</span> than yesterday.
+                        Today is going to be <span class="${comparisonClass}">${comparison}</span> than yesterday.
                     </div>
                 `;
             }
@@ -200,6 +201,7 @@ async function loadWeather() {
             const dayName = futureDate.toLocaleDateString('en-US', { weekday: 'long' });
 
             // Display the main message
+            const comparisonClass = comparison === 'warmer' ? 'comparison warmer' : 'comparison';
             if (comparison === 'the same') {
                 messageEl.innerHTML = `
                     <div class="message-text">
@@ -209,7 +211,7 @@ async function loadWeather() {
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
-                        <span class="comparison">${dayName}</span> is going to be <span class="comparison">${comparison}</span> than today.
+                        <span class="comparison">${dayName}</span> is going to be <span class="${comparisonClass}">${comparison}</span> than today.
                     </div>
                 `;
             }
