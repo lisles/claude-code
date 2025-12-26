@@ -74,7 +74,7 @@ async function loadWeather() {
         if (currentMode === 'yesterday') {
             // Yesterday mode - compare today with yesterday
             const weatherData = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&past_days=1&forecast_days=2`
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&past_days=1&forecast_days=2`
             ).then(res => res.json());
 
             const yesterdayTemp = weatherData.daily.temperature_2m_max[0];
@@ -83,7 +83,8 @@ async function loadWeather() {
             const todayPrecip = weatherData.daily.precipitation_probability_max[1] || 0;
             const currentTemp = weatherData.current.temperature_2m;
 
-            // Find times for today's high and low
+            // Find times for today's high, low, and precipitation start
+            const now = new Date();
             const todayStart = new Date();
             todayStart.setHours(0, 0, 0, 0);
             const todayEnd = new Date(todayStart);
@@ -91,6 +92,7 @@ async function loadWeather() {
 
             let highTime = '';
             let lowTime = '';
+            let precipStartTime = '';
 
             for (let i = 0; i < weatherData.hourly.time.length; i++) {
                 const hourTime = new Date(weatherData.hourly.time[i]);
@@ -100,6 +102,10 @@ async function loadWeather() {
                     }
                     if (Math.abs(weatherData.hourly.temperature_2m[i] - todayLow) < 0.5 && !lowTime) {
                         lowTime = hourTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                    }
+                    // Find first precipitation > 20% after current time
+                    if (hourTime >= now && weatherData.hourly.precipitation_probability[i] > 20 && !precipStartTime) {
+                        precipStartTime = hourTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
                     }
                 }
             }
@@ -135,7 +141,7 @@ async function loadWeather() {
                     Currently ${Math.round(currentTemp)}°F
                 </div>
                 <div style="margin-top: 8px; font-size: 0.95rem; opacity: 0.85;">
-                    Today's high is ${Math.round(todayTemp)}°F${highTime ? ` at ${highTime}` : ''} with a low of ${Math.round(todayLow)}°F${lowTime ? ` at ${lowTime}` : ''} and ${todayPrecip}% chance of precipitation
+                    Today's high is ${Math.round(todayTemp)}°F${highTime ? ` at ${highTime}` : ''} with a low of ${Math.round(todayLow)}°F${lowTime ? ` at ${lowTime}` : ''} and ${todayPrecip}% chance of precipitation${todayPrecip > 10 && precipStartTime ? ` starting at ${precipStartTime}` : ''}
                 </div>
             `;
 
@@ -147,7 +153,7 @@ async function loadWeather() {
         } else {
             // Future mode - compare future date with today
             const weatherData = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&forecast_days=8`
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&forecast_days=8`
             ).then(res => res.json());
 
             const futureDayOffset = parseInt(document.getElementById('futureDay').value);
@@ -157,7 +163,8 @@ async function loadWeather() {
             const currentTemp = weatherData.current.temperature_2m;
             const futureTemp = weatherData.daily.temperature_2m_max[futureDayOffset];
 
-            // Find times for today's high and low
+            // Find times for today's high, low, and precipitation start
+            const now = new Date();
             const todayStart = new Date();
             todayStart.setHours(0, 0, 0, 0);
             const todayEnd = new Date(todayStart);
@@ -165,6 +172,7 @@ async function loadWeather() {
 
             let highTime = '';
             let lowTime = '';
+            let precipStartTime = '';
 
             for (let i = 0; i < weatherData.hourly.time.length; i++) {
                 const hourTime = new Date(weatherData.hourly.time[i]);
@@ -174,6 +182,10 @@ async function loadWeather() {
                     }
                     if (Math.abs(weatherData.hourly.temperature_2m[i] - todayLow) < 0.5 && !lowTime) {
                         lowTime = hourTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                    }
+                    // Find first precipitation > 20% after current time
+                    if (hourTime >= now && weatherData.hourly.precipitation_probability[i] > 20 && !precipStartTime) {
+                        precipStartTime = hourTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
                     }
                 }
             }
@@ -214,7 +226,7 @@ async function loadWeather() {
                     Currently ${Math.round(currentTemp)}°F
                 </div>
                 <div style="margin-top: 8px; font-size: 0.95rem; opacity: 0.85;">
-                    Today's high is ${Math.round(todayTemp)}°F${highTime ? ` at ${highTime}` : ''} with a low of ${Math.round(todayLow)}°F${lowTime ? ` at ${lowTime}` : ''} and ${todayPrecip}% chance of precipitation
+                    Today's high is ${Math.round(todayTemp)}°F${highTime ? ` at ${highTime}` : ''} with a low of ${Math.round(todayLow)}°F${lowTime ? ` at ${lowTime}` : ''} and ${todayPrecip}% chance of precipitation${todayPrecip > 10 && precipStartTime ? ` starting at ${precipStartTime}` : ''}
                 </div>
             `;
 
