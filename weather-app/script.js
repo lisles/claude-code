@@ -135,7 +135,7 @@ async function loadWeather() {
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
-                        Today is going to be <span class="${comparisonClass}">${modifier}${comparison}</span> than yesterday.
+                        Today is going to be ${modifier}<span class="${comparisonClass}">${comparison}</span> than yesterday.
                     </div>
                 `;
             }
@@ -229,7 +229,7 @@ async function loadWeather() {
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
-                        <span class="comparison">${dayName}</span> is going to be <span class="${comparisonClass}">${modifier}${comparison}</span> than today.
+                        <span class="comparison">${dayName}</span> is going to be ${modifier}<span class="${comparisonClass}">${comparison}</span> than today.
                     </div>
                 `;
             }
