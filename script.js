@@ -8,13 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set initial mode
     if (currentMode === 'future') {
-        setMode('future', false);
+        setMode('future', null, false);
     }
 
     loadWeather();
 });
 
-function setMode(mode, shouldReload = true) {
+function setMode(mode, buttonElement = null, shouldReload = true) {
     currentMode = mode;
     localStorage.setItem('weatherMode', mode);
 
@@ -22,16 +22,20 @@ function setMode(mode, shouldReload = true) {
     document.querySelectorAll('.mode-btn').forEach(btn => {
         btn.classList.remove('active');
     });
-    event?.target?.classList.add('active');
+
+    // Add active class to the appropriate button
+    if (mode === 'future') {
+        document.querySelectorAll('.mode-btn')[1].classList.add('active');
+    } else {
+        document.querySelectorAll('.mode-btn')[0].classList.add('active');
+    }
 
     // Show/hide future selector
     const futureSelector = document.getElementById('futureSelector');
     if (mode === 'future') {
         futureSelector.style.display = 'block';
-        document.querySelectorAll('.mode-btn')[1].classList.add('active');
     } else {
         futureSelector.style.display = 'none';
-        document.querySelectorAll('.mode-btn')[0].classList.add('active');
     }
 
     if (shouldReload) {
