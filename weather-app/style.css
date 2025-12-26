@@ -126,6 +126,10 @@ body {
     font-weight: 500;
 }
 
+.bullet {
+    margin: 0 15px;
+}
+
 .refresh-btn {
     background: rgba(255, 255, 255, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.3);
@@ -189,11 +193,16 @@ body {
     }
 
     .details {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
 
-    .details > div {
-        line-height: 1.6;
+    .temp-comparison .bullet {
+        display: none;
+    }
+
+    .temp-comparison .temp {
+        display: block;
+        margin: 4px 0;
     }
 
     .location-input {

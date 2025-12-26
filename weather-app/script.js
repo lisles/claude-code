@@ -132,11 +132,11 @@ async function loadWeather() {
 
             // Display temperature details
             detailsEl.innerHTML = `
-                <div>
+                <div class="temp-comparison">
                     <span class="temp">Yesterday: ${Math.round(yesterdayTemp)}°F</span>
-                    <span style="margin: 0 15px;">•</span>
+                    <span class="bullet">•</span>
                     <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
-                    ${difference > 0 ? `<span style="margin: 0 15px;">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
+                    ${difference > 0 ? `<span class="bullet">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
                 </div>
                 <div style="margin-top: 10px; font-size: 1rem; opacity: 0.9;">
                     Currently ${Math.round(currentTemp)}°F
@@ -218,11 +218,11 @@ async function loadWeather() {
 
             // Display temperature details
             detailsEl.innerHTML = `
-                <div>
+                <div class="temp-comparison">
                     <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
-                    <span style="margin: 0 15px;">•</span>
+                    <span class="bullet">•</span>
                     <span class="temp">${dayName}: ${Math.round(futureTemp)}°F</span>
-                    ${difference > 0 ? `<span style="margin: 0 15px;">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
+                    ${difference > 0 ? `<span class="bullet">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
                 </div>
                 <div style="margin-top: 10px; font-size: 1rem; opacity: 0.9;">
                     Currently ${Math.round(currentTemp)}°F
