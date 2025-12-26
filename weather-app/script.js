@@ -121,12 +121,14 @@ async function loadWeather() {
                     <div class="message-text">
                         Today is going to be <span class="${comparisonClass}">the same</span> as yesterday.
                     </div>
+                    <div class="current-temp">Currently ${Math.round(currentTemp)}°F</div>
                 `;
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
                         Today is going to be <span class="${comparisonClass}">${comparison}</span> than yesterday.
                     </div>
+                    <div class="current-temp">Currently ${Math.round(currentTemp)}°F</div>
                 `;
             }
 
@@ -136,10 +138,7 @@ async function loadWeather() {
                     <span class="temp">Yesterday: ${Math.round(yesterdayTemp)}°F</span>
                     <span class="bullet">•</span>
                     <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
-                    ${difference > 0 ? `<span class="bullet">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
-                </div>
-                <div style="margin-top: 10px; font-size: 1rem; opacity: 0.9;">
-                    Currently ${Math.round(currentTemp)}°F
+                    ${difference > 0 ? `<span class="bullet">•</span><span class="temp">Difference: ${Math.round(difference)}°F</span>` : ''}
                 </div>
                 <div style="margin-top: 8px; font-size: 0.95rem; opacity: 0.85;">
                     Today's high is ${Math.round(todayTemp)}°F${highTime ? ` at ${highTime}` : ''} with a low of ${Math.round(todayLow)}°F${lowTime ? ` at ${lowTime}` : ''} and ${todayPrecip}% chance of precipitation${todayPrecip > 10 && precipStartTime ? ` starting at ${precipStartTime}` : ''}
@@ -207,12 +206,14 @@ async function loadWeather() {
                     <div class="message-text">
                         <span class="comparison">${dayName}</span> is going to be the same as today.
                     </div>
+                    <div class="current-temp">Currently ${Math.round(currentTemp)}°F</div>
                 `;
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
                         <span class="comparison">${dayName}</span> is going to be <span class="${comparisonClass}">${comparison}</span> than today.
                     </div>
+                    <div class="current-temp">Currently ${Math.round(currentTemp)}°F</div>
                 `;
             }
 
@@ -222,10 +223,7 @@ async function loadWeather() {
                     <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
                     <span class="bullet">•</span>
                     <span class="temp">${dayName}: ${Math.round(futureTemp)}°F</span>
-                    ${difference > 0 ? `<span class="bullet">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
-                </div>
-                <div style="margin-top: 10px; font-size: 1rem; opacity: 0.9;">
-                    Currently ${Math.round(currentTemp)}°F
+                    ${difference > 0 ? `<span class="bullet">•</span><span class="temp">Difference: ${Math.round(difference)}°F</span>` : ''}
                 </div>
                 <div style="margin-top: 8px; font-size: 0.95rem; opacity: 0.85;">
                     Today's high is ${Math.round(todayTemp)}°F${highTime ? ` at ${highTime}` : ''} with a low of ${Math.round(todayLow)}°F${lowTime ? ` at ${lowTime}` : ''} and ${todayPrecip}% chance of precipitation${todayPrecip > 10 && precipStartTime ? ` starting at ${precipStartTime}` : ''}

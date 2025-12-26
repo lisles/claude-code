@@ -104,6 +104,13 @@ body {
     background-clip: text;
 }
 
+.current-temp {
+    margin-top: 15px;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #4b5563;
+}
+
 .loading {
     font-size: 1.5rem;
     color: #718096;
