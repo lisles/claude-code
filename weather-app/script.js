@@ -110,9 +110,12 @@ async function loadWeather() {
                 }
             }
 
-            const difference = Math.abs(todayTemp - yesterdayTemp);
-            const comparison = todayTemp > yesterdayTemp ? 'warmer' :
-                              todayTemp < yesterdayTemp ? 'colder' : 'the same';
+            // Calculate difference based on rounded values for display consistency
+            const yesterdayRounded = Math.round(yesterdayTemp);
+            const todayRounded = Math.round(todayTemp);
+            const difference = Math.abs(todayRounded - yesterdayRounded);
+            const comparison = todayRounded > yesterdayRounded ? 'warmer' :
+                              todayRounded < yesterdayRounded ? 'colder' : 'the same';
 
             // Add modifier based on difference
             let modifier = '';
@@ -199,9 +202,12 @@ async function loadWeather() {
                 }
             }
 
-            const difference = Math.abs(futureTemp - todayTemp);
-            const comparison = futureTemp > todayTemp ? 'warmer' :
-                              futureTemp < todayTemp ? 'colder' : 'the same';
+            // Calculate difference based on rounded values for display consistency
+            const todayRounded = Math.round(todayTemp);
+            const futureRounded = Math.round(futureTemp);
+            const difference = Math.abs(futureRounded - todayRounded);
+            const comparison = futureRounded > todayRounded ? 'warmer' :
+                              futureRounded < todayRounded ? 'colder' : 'the same';
 
             // Add modifier based on difference
             let modifier = '';
