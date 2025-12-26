@@ -114,6 +114,16 @@ async function loadWeather() {
             const comparison = todayTemp > yesterdayTemp ? 'warmer' :
                               todayTemp < yesterdayTemp ? 'colder' : 'the same';
 
+            // Add modifier based on difference
+            let modifier = '';
+            if (comparison !== 'the same') {
+                if (difference <= 3) {
+                    modifier = 'a bit ';
+                } else if (difference > 7) {
+                    modifier = 'a lot ';
+                }
+            }
+
             // Display the main message
             const comparisonClass = comparison === 'warmer' ? 'comparison warmer' : 'comparison';
             if (comparison === 'the same') {
@@ -125,7 +135,7 @@ async function loadWeather() {
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
-                        Today is going to be <span class="${comparisonClass}">${comparison}</span> than yesterday.
+                        Today is going to be <span class="${comparisonClass}">${modifier}${comparison}</span> than yesterday.
                     </div>
                 `;
             }
@@ -193,6 +203,16 @@ async function loadWeather() {
             const comparison = futureTemp > todayTemp ? 'warmer' :
                               futureTemp < todayTemp ? 'colder' : 'the same';
 
+            // Add modifier based on difference
+            let modifier = '';
+            if (comparison !== 'the same') {
+                if (difference <= 3) {
+                    modifier = 'a bit ';
+                } else if (difference > 7) {
+                    modifier = 'a lot ';
+                }
+            }
+
             // Get day name for the future date
             const futureDate = new Date();
             futureDate.setDate(futureDate.getDate() + futureDayOffset);
@@ -209,7 +229,7 @@ async function loadWeather() {
             } else {
                 messageEl.innerHTML = `
                     <div class="message-text">
-                        <span class="comparison">${dayName}</span> is going to be <span class="${comparisonClass}">${comparison}</span> than today.
+                        <span class="comparison">${dayName}</span> is going to be <span class="${comparisonClass}">${modifier}${comparison}</span> than today.
                     </div>
                 `;
             }
