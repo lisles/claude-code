@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today vs Yesterday</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="message" class="message">
+            <span class="loading">Loading...</span>
+        </div>
+        <div id="details" class="details"></div>
+        <button id="refresh" class="refresh-btn" onclick="loadWeather()">↻</button>
+        <div class="location-input">
+            <input type="text" id="city" placeholder="Enter your city" value="San Francisco">
+            <button onclick="updateLocation()">Update</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
