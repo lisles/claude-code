@@ -17,10 +17,9 @@ Plus, now you can also look ahead: **Is Saturday going to be warmer or colder th
 
 ## Live Demo
 
-Visit the live app: **Your GitHub Pages URL will be here once deployed!**
+**[Try it now: https://lisles.github.io/claude-code/](https://lisles.github.io/claude-code/)**
 
-After enabling GitHub Pages (see instructions below), your app will be available at:
-`https://[your-username].github.io/claude-code/`
+Bookmark it on your phone for quick daily checks!
 
 ## How to Use
 
@@ -47,18 +46,9 @@ The app uses the free [Open-Meteo API](https://open-meteo.com/) to fetch weather
 - Fetches the selected future day's forecasted high temperature
 - Compares them and tells you if that day will be warmer or colder than today
 
-## Setting Up GitHub Pages (for phone access)
+## Deployment
 
-To use this app on your phone, enable GitHub Pages:
-
-1. Go to your repo on GitHub
-2. Click **Settings** → **Pages**
-3. Under "Build and deployment":
-   - Source: **GitHub Actions**
-4. The workflow will auto-deploy
-5. Your app will be live at `https://[username].github.io/claude-code/`
-
-Bookmark it on your phone and check it every morning!
+The app is deployed via GitHub Actions to GitHub Pages and automatically updates when changes are pushed to the branch.
 
 ## Running Locally
 
