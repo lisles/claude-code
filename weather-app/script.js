@@ -74,11 +74,14 @@ async function loadWeather() {
         if (currentMode === 'yesterday') {
             // Yesterday mode - compare today with yesterday
             const weatherData = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&past_days=1`
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&past_days=1`
             ).then(res => res.json());
 
             const yesterdayTemp = weatherData.daily.temperature_2m_max[0];
             const todayTemp = weatherData.daily.temperature_2m_max[1];
+            const todayLow = weatherData.daily.temperature_2m_min[1];
+            const todayPrecip = weatherData.daily.precipitation_probability_max[1] || 0;
+            const currentTemp = weatherData.current.temperature_2m;
 
             const difference = Math.abs(todayTemp - yesterdayTemp);
             const comparison = todayTemp > yesterdayTemp ? 'warmer' :
@@ -107,6 +110,12 @@ async function loadWeather() {
                     <span class="temp">Today: ${Math.round(todayTemp)}°F</span>
                     ${difference > 0 ? `<span style="margin: 0 15px;">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
                 </div>
+                <div style="margin-top: 10px; font-size: 1rem; opacity: 0.9;">
+                    Currently ${Math.round(currentTemp)}°F
+                </div>
+                <div style="margin-top: 8px; font-size: 0.95rem; opacity: 0.85;">
+                    Today's high is ${Math.round(todayTemp)}°F with a low of ${Math.round(todayLow)}°F and ${todayPrecip}% chance of precipitation
+                </div>
                 <div style="margin-top: 10px; font-size: 1rem; opacity: 0.8;">
                     ${name}${country ? `, ${country}` : ''}
                 </div>
@@ -114,11 +123,14 @@ async function loadWeather() {
         } else {
             // Future mode - compare future date with today
             const weatherData = await fetch(
-                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&timezone=auto&forecast_days=8`
+                `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&forecast_days=8`
             ).then(res => res.json());
 
             const futureDayOffset = parseInt(document.getElementById('futureDay').value);
             const todayTemp = weatherData.daily.temperature_2m_max[0];
+            const todayLow = weatherData.daily.temperature_2m_min[0];
+            const todayPrecip = weatherData.daily.precipitation_probability_max[0] || 0;
+            const currentTemp = weatherData.current.temperature_2m;
             const futureTemp = weatherData.daily.temperature_2m_max[futureDayOffset];
 
             const difference = Math.abs(futureTemp - todayTemp);
@@ -152,6 +164,12 @@ async function loadWeather() {
                     <span style="margin: 0 15px;">•</span>
                     <span class="temp">${dayName}: ${Math.round(futureTemp)}°F</span>
                     ${difference > 0 ? `<span style="margin: 0 15px;">•</span><span class="temp">${Math.round(difference)}° difference</span>` : ''}
+                </div>
+                <div style="margin-top: 10px; font-size: 1rem; opacity: 0.9;">
+                    Currently ${Math.round(currentTemp)}°F
+                </div>
+                <div style="margin-top: 8px; font-size: 0.95rem; opacity: 0.85;">
+                    Today's high is ${Math.round(todayTemp)}°F with a low of ${Math.round(todayLow)}°F and ${todayPrecip}% chance of precipitation
                 </div>
                 <div style="margin-top: 10px; font-size: 1rem; opacity: 0.8;">
                     ${name}${country ? `, ${country}` : ''}
