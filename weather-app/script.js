@@ -166,7 +166,8 @@ async function loadWeather() {
                     month: 'short',
                     day: 'numeric',
                     hour: 'numeric',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    timeZone: weatherData.timezone
                 });
                 locationEl.innerHTML = `${name}${country ? `, ${country}` : ''}<br>${dateTimeString}`;
             }
@@ -271,7 +272,8 @@ async function loadWeather() {
                     month: 'short',
                     day: 'numeric',
                     hour: 'numeric',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    timeZone: weatherData.timezone
                 });
                 locationEl.innerHTML = `${name}${country ? `, ${country}` : ''}<br>${dateTimeString}`;
             }
