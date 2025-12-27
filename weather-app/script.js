@@ -160,7 +160,15 @@ async function loadWeather() {
             // Update location display
             const locationEl = document.getElementById('location');
             if (locationEl) {
-                locationEl.textContent = `${name}${country ? `, ${country}` : ''}`;
+                const now = new Date();
+                const dateTimeString = now.toLocaleString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit'
+                });
+                locationEl.innerHTML = `${name}${country ? `, ${country}` : ''}<br>${dateTimeString}`;
             }
         } else {
             // Future mode - compare future date with today
@@ -257,7 +265,15 @@ async function loadWeather() {
             // Update location display
             const locationEl = document.getElementById('location');
             if (locationEl) {
-                locationEl.textContent = `${name}${country ? `, ${country}` : ''}`;
+                const now = new Date();
+                const dateTimeString = now.toLocaleString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit'
+                });
+                locationEl.innerHTML = `${name}${country ? `, ${country}` : ''}<br>${dateTimeString}`;
             }
         }
 
