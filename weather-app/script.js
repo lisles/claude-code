@@ -2,6 +2,12 @@
 let currentCity = localStorage.getItem('weatherCity') || '05255';
 let currentMode = localStorage.getItem('weatherMode') || 'yesterday';
 
+// "Colder" reads oddly in the summer, so swap in "cooler" for meteorological summer (Jun-Aug)
+function isSummer(date = new Date()) {
+    const month = date.getMonth(); // 0-indexed
+    return month >= 5 && month <= 7;
+}
+
 // Load weather on page load
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('city').value = currentCity;
@@ -115,7 +121,7 @@ async function loadWeather() {
             const todayRounded = Math.round(todayTemp);
             const difference = Math.abs(todayRounded - yesterdayRounded);
             const comparison = todayRounded > yesterdayRounded ? 'warmer' :
-                              todayRounded < yesterdayRounded ? 'colder' : 'the same';
+                              todayRounded < yesterdayRounded ? (isSummer() ? 'cooler' : 'colder') : 'the same';
 
             // Add modifier based on difference
             let modifier = '';
@@ -215,8 +221,10 @@ async function loadWeather() {
             const todayRounded = Math.round(todayTemp);
             const futureRounded = Math.round(futureTemp);
             const difference = Math.abs(futureRounded - todayRounded);
+            const futureDateForSeason = new Date();
+            futureDateForSeason.setDate(futureDateForSeason.getDate() + futureDayOffset);
             const comparison = futureRounded > todayRounded ? 'warmer' :
-                              futureRounded < todayRounded ? 'colder' : 'the same';
+                              futureRounded < todayRounded ? (isSummer(futureDateForSeason) ? 'cooler' : 'colder') : 'the same';
 
             // Add modifier based on difference
             let modifier = '';
